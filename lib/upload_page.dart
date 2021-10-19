@@ -102,8 +102,8 @@ class _Uploader extends State<Uploader> {
   }
 
   //method to build buttons with location.
-  buildLocationButton(String locationName) {
-    if (locationName != null ?? locationName.isNotEmpty) {
+  buildLocationButton(String? locationName) {
+    if (locationName != null) {
       return InkWell(
         onTap: () {
           locationController.text = locationName;
