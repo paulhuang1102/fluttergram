@@ -4,7 +4,6 @@ import 'dart:async';
 import 'main.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Feed extends StatefulWidget {
   _Feed createState() => _Feed();
@@ -59,15 +58,15 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   }
 
   _loadFeed() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String json = prefs.getString("feed");
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String json = prefs.getString("feed");
 
     if (json != null) {
-      List<Map<String, dynamic>> data =
-          jsonDecode(json).cast<Map<String, dynamic>>();
-      List<ImagePost> listOfPosts = _generateFeed(data);
+      // List<Map<String, dynamic>> data =
+      //     jsonDecode(json).cast<Map<String, dynamic>>();
+      // List<ImagePost> listOfPosts = _generateFeed(data);
       setState(() {
-        feedData = listOfPosts;
+        // feedData = listOfPosts;
       });
     } else {
       _getFeed();
@@ -77,11 +76,11 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   _getFeed() async {
     print("Staring getFeed");
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String userId = googleSignIn.currentUser.id.toString();
+    // String userId = googleSignIn.currentUser.id.toString();
     var url =
-        'https://us-central1-mp-rps.cloudfunctions.net/getFeed?uid=' + userId;
+        'https://us-central1-mp-rps.cloudfunctions.net/getFeed?uid=';
     var httpClient = HttpClient();
 
     List<ImagePost> listOfPosts;
@@ -91,14 +90,14 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
       var response = await request.close();
       if (response.statusCode == HttpStatus.ok) {
         String json = await response.transform(utf8.decoder).join();
-        prefs.setString("feed", json);
+        // prefs.setString("feed", json);
         List<Map<String, dynamic>> data =
             jsonDecode(json).cast<Map<String, dynamic>>();
         listOfPosts = _generateFeed(data);
         result = "Success in http request for feed";
       } else {
         result =
-            'Error getting a feed: Http status ${response.statusCode} | userId $userId';
+            'Error getting a feed: Http status ${response.statusCode} | userId';
       }
     } catch (exception) {
       result = 'Failed invoking the getFeed function. Exception: $exception';

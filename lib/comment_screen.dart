@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import "dart:async";
 import "main.dart"; //for current user
 
@@ -90,53 +90,53 @@ class _CommentScreenState extends State<CommentScreen> {
   Future<List<Comment>> getComments() async {
     List<Comment> comments = [];
 
-    QuerySnapshot data = await FirebaseFirestore.instance
-        .collection("insta_comments")
-        .doc(postId)
-        .collection("comments")
-        .get();
-    data.docs.forEach((DocumentSnapshot doc) {
-      comments.add(Comment.fromDocument(doc));
-    });
+    // QuerySnapshot data = await FirebaseFirestore.instance
+    //     .collection("insta_comments")
+    //     .doc(postId)
+    //     .collection("comments")
+    //     .get();
+    // data.docs.forEach((DocumentSnapshot doc) {
+    //   comments.add(Comment.fromDocument(doc));
+    // });
     return comments;
   }
 
   addComment(String comment) {
     _commentController.clear();
-    FirebaseFirestore.instance
-        .collection("insta_comments")
-        .doc(postId)
-        .collection("comments")
-        .add({
-      "username": currentUserModel.username,
-      "comment": comment,
-      "timestamp": Timestamp.now(),
-      "avatarUrl": currentUserModel.photoUrl,
-      "userId": currentUserModel.id
-    });
+    // FirebaseFirestore.instance
+    //     .collection("insta_comments")
+    //     .doc(postId)
+    //     .collection("comments")
+    //     .add({
+    //   "username": currentUserModel.username,
+    //   "comment": comment,
+    //   "timestamp": Timestamp.now(),
+    //   "avatarUrl": currentUserModel.photoUrl,
+    //   "userId": currentUserModel.id
+    // });
 
-    //adds to postOwner's activity feed
-    FirebaseFirestore.instance
-        .collection("insta_a_feed")
-        .doc(postOwner)
-        .collection("items")
-        .add({
-      "username": currentUserModel.username,
-      "userId": currentUserModel.id,
-      "type": "comment",
-      "userProfileImg": currentUserModel.photoUrl,
-      "commentData": comment,
-      "timestamp": Timestamp.now(),
-      "postId": postId,
-      "mediaUrl": postMediaUrl,
-    });
+    // //adds to postOwner's activity feed
+    // FirebaseFirestore.instance
+    //     .collection("insta_a_feed")
+    //     .doc(postOwner)
+    //     .collection("items")
+    //     .add({
+    //   "username": currentUserModel.username,
+    //   "userId": currentUserModel.id,
+    //   "type": "comment",
+    //   "userProfileImg": currentUserModel.photoUrl,
+    //   "commentData": comment,
+    //   "timestamp": Timestamp.now(),
+    //   "postId": postId,
+    //   "mediaUrl": postMediaUrl,
+    // });
 
     // add comment to the current listview for an optimistic update
     setState(() {
       fetchedComments = List.from(fetchedComments)..add(Comment(
           username: currentUserModel.username,
           comment: comment,
-          timestamp: Timestamp.now(),
+          // timestamp: Timestamp.now(),
           avatarUrl: currentUserModel.photoUrl,
           userId: currentUserModel.id
       ));
@@ -149,25 +149,26 @@ class Comment extends StatelessWidget {
   final String userId;
   final String avatarUrl;
   final String comment;
-  final Timestamp timestamp;
+  // final Timestamp timestamp;
 
   Comment(
       {this.username,
       this.userId,
       this.avatarUrl,
       this.comment,
-      this.timestamp});
+      // this.timestamp,
+      });
 
-  factory Comment.fromDocument(DocumentSnapshot document) {
-    var data = document.data();
-    return Comment(
-      username: data['username'],
-      userId: data['userId'],
-      comment: data["comment"],
-      timestamp: data["timestamp"],
-      avatarUrl: data["avatarUrl"],
-    );
-  }
+  // factory Comment.fromDocument(DocumentSnapshot document) {
+  //   var data = document.data();
+  //   return Comment(
+  //     username: data['username'],
+  //     userId: data['userId'],
+  //     comment: data["comment"],
+  //     // timestamp: data["timestamp"],
+  //     avatarUrl: data["avatarUrl"],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

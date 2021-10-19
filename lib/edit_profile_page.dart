@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart'; //for currentuser & google signin instance
 import 'models/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfilePage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -28,13 +27,13 @@ class EditProfilePage extends StatelessWidget {
   }
 
   applyChanges() {
-    FirebaseFirestore.instance
-        .collection('insta_users')
-        .doc(currentUserModel.id)
-        .update({
-      "displayName": nameController.text,
-      "bio": bioController.text,
-    });
+    // FirebaseFirestore.instance
+    //     .collection('insta_users')
+    //     .doc(currentUserModel.id)
+    //     .update({
+    //   "displayName": nameController.text,
+    //   "bio": bioController.text,
+    // });
   }
 
   Widget buildTextField({String name, TextEditingController controller}) {
@@ -61,17 +60,18 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('insta_users')
-            .doc(currentUserModel.id)
-            .get(),
+        // future: FirebaseFirestore.instance
+        //     .collection('insta_users')
+        //     .doc(currentUserModel.id)
+        //     .get(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Container(
                 alignment: FractionalOffset.center,
                 child: CircularProgressIndicator());
 
-          User user = User.fromDocument(snapshot.data);
+          // User user = User.fromDocument(snapshot.data);
+          User user = null;
 
           nameController.text = user.displayName;
           bioController.text = user.bio;
@@ -120,11 +120,11 @@ class EditProfilePage extends StatelessWidget {
 
   void _logout(BuildContext context) async {
     print("logout");
-    await auth.signOut();
-    await googleSignIn.signOut();
+    // await auth.signOut();
+    // await googleSignIn.signOut();
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.clear();
 
     currentUserModel = null;
 

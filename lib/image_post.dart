@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'main.dart';
 import 'dart:async';
@@ -18,17 +18,17 @@ class ImagePost extends StatefulWidget {
       this.postId,
       this.ownerId});
 
-  factory ImagePost.fromDocument(DocumentSnapshot document) {
-    return ImagePost(
-      username: document['username'],
-      location: document['location'],
-      mediaUrl: document['mediaUrl'],
-      likes: document['likes'],
-      description: document['description'],
-      postId: document.id,
-      ownerId: document['ownerId'],
-    );
-  }
+  // factory ImagePost.fromDocument(DocumentSnapshot document) {
+  //   return ImagePost(
+  //     username: document['username'],
+  //     location: document['location'],
+  //     mediaUrl: document['mediaUrl'],
+  //     likes: document['likes'],
+  //     description: document['description'],
+  //     postId: document.id,
+  //     ownerId: document['ownerId'],
+  //   );
+  // }
 
   factory ImagePost.fromJSON(Map data) {
     return ImagePost(
@@ -96,7 +96,7 @@ class _ImagePost extends State<ImagePost> {
     fontWeight: FontWeight.bold,
   );
 
-  var reference = FirebaseFirestore.instance.collection('insta_posts');
+  // var reference = FirebaseFirestore.instance.collection('insta_posts');
 
   _ImagePost(
       {this.mediaUrl,
@@ -166,10 +166,10 @@ class _ImagePost extends State<ImagePost> {
     }
 
     return FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('insta_users')
-            .doc(ownerId)
-            .get(),
+        // future: FirebaseFirestore.instance
+        //     .collection('insta_users')
+        //     .doc(ownerId)
+        //     .get(),
         builder: (context, snapshot) {
 
           if (snapshot.data != null) {
@@ -201,7 +201,8 @@ class _ImagePost extends State<ImagePost> {
 
   @override
   Widget build(BuildContext context) {
-    liked = (likes[googleSignIn.currentUser.id.toString()] == true);
+    // liked = (likes[googleSignIn.currentUser.id.toString()] == true);
+    liked = false;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -256,15 +257,15 @@ class _ImagePost extends State<ImagePost> {
   }
 
   void _likePost(String postId2) {
-    var userId = googleSignIn.currentUser.id;
+    var userId;
     bool _liked = likes[userId] == true;
 
     if (_liked) {
       print('removing like');
-      reference.doc(postId).update({
-        'likes.$userId': false
-        //firestore plugin doesnt support deleting, so it must be nulled / falsed
-      });
+      // reference.doc(postId).update({
+      //   'likes.$userId': false
+      //   //firestore plugin doesnt support deleting, so it must be nulled / falsed
+      // });
 
       setState(() {
         likeCount = likeCount - 1;
@@ -277,7 +278,7 @@ class _ImagePost extends State<ImagePost> {
 
     if (!_liked) {
       print('liking');
-      reference.doc(postId).update({'likes.$userId': true});
+      // reference.doc(postId).update({'likes.$userId': true});
 
       addActivityFeedItem();
 
@@ -296,29 +297,29 @@ class _ImagePost extends State<ImagePost> {
   }
 
   void addActivityFeedItem() {
-    FirebaseFirestore.instance
-        .collection("insta_a_feed")
-        .doc(ownerId)
-        .collection("items")
-        .doc(postId)
-        .set({
-      "username": currentUserModel.username,
-      "userId": currentUserModel.id,
-      "type": "like",
-      "userProfileImg": currentUserModel.photoUrl,
-      "mediaUrl": mediaUrl,
-      "timestamp": DateTime.now(),
-      "postId": postId,
-    });
+    // FirebaseFirestore.instance
+    //     .collection("insta_a_feed")
+    //     .doc(ownerId)
+    //     .collection("items")
+    //     .doc(postId)
+    //     .set({
+    //   "username": currentUserModel.username,
+    //   "userId": currentUserModel.id,
+    //   "type": "like",
+    //   "userProfileImg": currentUserModel.photoUrl,
+    //   "mediaUrl": mediaUrl,
+    //   "timestamp": DateTime.now(),
+    //   "postId": postId,
+    // });
   }
 
   void removeActivityFeedItem() {
-    FirebaseFirestore.instance
-        .collection("insta_a_feed")
-        .doc(ownerId)
-        .collection("items")
-        .doc(postId)
-        .delete();
+    // FirebaseFirestore.instance
+    //     .collection("insta_a_feed")
+    //     .doc(ownerId)
+    //     .collection("items")
+    //     .doc(postId)
+    //     .delete();
   }
 }
 
@@ -328,9 +329,9 @@ class ImagePostFromId extends StatelessWidget {
   const ImagePostFromId({this.id});
 
   getImagePost() async {
-    var document =
-        await FirebaseFirestore.instance.collection('insta_posts').doc(id).get();
-    return ImagePost.fromDocument(document);
+    // var document =
+    //     await FirebaseFirestore.instance.collection('insta_posts').doc(id).get();
+    // return ImagePost.fromDocument(document);
   }
 
   @override

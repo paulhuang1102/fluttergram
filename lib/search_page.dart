@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import "profile_page.dart"; // needed to import for openProfile function
 import 'models/user.dart';
@@ -9,7 +9,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> with AutomaticKeepAliveClientMixin<SearchPage>{
-  Future<QuerySnapshot> userDocs;
+  // Future<QuerySnapshot> userDocs;
 
   buildSearchField() {
     return AppBar(
@@ -23,29 +23,29 @@ class _SearchPage extends State<SearchPage> with AutomaticKeepAliveClientMixin<S
     );
   }
 
-  ListView buildSearchResults(List<DocumentSnapshot> docs) {
-    List<UserSearchItem> userSearchItems = [];
+  // ListView buildSearchResults(List<DocumentSnapshot> docs) {
+  //   List<UserSearchItem> userSearchItems = [];
 
-    docs.forEach((DocumentSnapshot doc) {
-      User user = User.fromDocument(doc);
-      UserSearchItem searchItem = UserSearchItem(user);
-      userSearchItems.add(searchItem);
-    });
+  //   docs.forEach((DocumentSnapshot doc) {
+  //     User user = User.fromDocument(doc);
+  //     UserSearchItem searchItem = UserSearchItem(user);
+  //     userSearchItems.add(searchItem);
+  //   });
 
-    return ListView(
-      children: userSearchItems,
-    );
-  }
+  //   return ListView(
+  //     children: userSearchItems,
+  //   );
+  // }
 
   void submit(String searchValue) async {
-    Future<QuerySnapshot> users = FirebaseFirestore.instance
-        .collection("insta_users")
-        .where('displayName', isGreaterThanOrEqualTo: searchValue)
-        .get();
+    // Future<QuerySnapshot> users = FirebaseFirestore.instance
+    //     .collection("insta_users")
+    //     .where('displayName', isGreaterThanOrEqualTo: searchValue)
+    //     .get();
 
-    setState(() {
-      userDocs = users;
-    });
+    // setState(() {
+    //   userDocs = users;
+    // });
   }
 
   Widget build(BuildContext context) {
@@ -53,19 +53,19 @@ class _SearchPage extends State<SearchPage> with AutomaticKeepAliveClientMixin<S
 
     return Scaffold(
       appBar: buildSearchField(),
-      body: userDocs == null
-          ? Text("")
-          : FutureBuilder<QuerySnapshot>(
-              future: userDocs,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return buildSearchResults(snapshot.data.docs);
-                } else {
-                  return Container(
-                      alignment: FractionalOffset.center,
-                      child: CircularProgressIndicator());
-                }
-              }),
+      // body: userDocs == null
+      //     ? Text("")
+      //     : FutureBuilder<QuerySnapshot>(
+      //         future: userDocs,
+      //         builder: (context, snapshot) {
+      //           if (snapshot.hasData) {
+      //             return buildSearchResults(snapshot.data.docs);
+      //           } else {
+      //             return Container(
+      //                 alignment: FractionalOffset.center,
+      //                 child: CircularProgressIndicator());
+      //           }
+      //         }),
     );
   }
 

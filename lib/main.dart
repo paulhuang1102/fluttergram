@@ -1,147 +1,144 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'feed.dart';
+import 'services/amplify/amplify_service.dart';
 import 'upload_page.dart';
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart' as FBA;
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:firebase_auth/firebase_auth.dart' as FBA;
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'profile_page.dart';
 import 'search_page.dart';
 import 'activity_feed.dart';
 import 'create_account.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
 import 'models/user.dart';
 
-final auth = FBA.FirebaseAuth.instance;
-final googleSignIn = GoogleSignIn();
-final ref = FirebaseFirestore.instance.collection('insta_users');
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
+// final auth = FBA.FirebaseAuth.instance;
+// final googleSignIn = GoogleSignIn();
+// final ref = FirebaseFirestore.instance.collection('insta_users');
+// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
 User currentUserModel;
 
 Future<void> main() async {
-
-  WidgetsFlutterBinding.ensureInitialized(); // after upgrading flutter this is now necessary
+  WidgetsFlutterBinding
+      .ensureInitialized(); // after upgrading flutter this is now necessary
 
   runApp(Fluttergram());
 }
 
 Future<Null> _ensureLoggedIn(BuildContext context) async {
-  GoogleSignInAccount user = googleSignIn.currentUser;
-  if (user == null) {
-    user = await googleSignIn.signInSilently();
-  }
-  if (user == null) {
-    await googleSignIn.signIn();
-    await tryCreateUserRecord(context);
-  }
+  // GoogleSignInAccount user = googleSignIn.currentUser;
+  // if (user == null) {
+  //   user = await googleSignIn.signInSilently();
+  // }
+  // if (user == null) {
+  //   await googleSignIn.signIn();
+  //   await tryCreateUserRecord(context);
+  // }
 
-  if (auth.currentUser == null) {
+  // if (auth.currentUser == null) {
 
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser
-        .authentication;
+  //   final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+  //   final GoogleSignInAuthentication googleAuth = await googleUser
+  //       .authentication;
 
-    final FBA.GoogleAuthCredential credential = FBA.GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+  //   final FBA.GoogleAuthCredential credential = FBA.GoogleAuthProvider.credential(
+  //     accessToken: googleAuth.accessToken,
+  //     idToken: googleAuth.idToken,
+  //   );
 
-    await auth.signInWithCredential(credential);
-  }
+  //   await auth.signInWithCredential(credential);
+  // }
 }
 
 Future<Null> _silentLogin(BuildContext context) async {
-  GoogleSignInAccount user = googleSignIn.currentUser;
+  // GoogleSignInAccount user = googleSignIn.currentUser;
 
-  if (user == null) {
-    user = await googleSignIn.signInSilently();
-    await tryCreateUserRecord(context);
-  }
+  // if (user == null) {
+  //   user = await googleSignIn.signInSilently();
+  //   await tryCreateUserRecord(context);
+  // }
 
-  if (await auth.currentUser == null && user != null) {
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser
-        .authentication;
+  // if (await auth.currentUser == null && user != null) {
+  //   final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+  //   final GoogleSignInAuthentication googleAuth = await googleUser
+  //       .authentication;
 
+  //   final FBA.GoogleAuthCredential credential = FBA.GoogleAuthProvider.credential(
+  //     accessToken: googleAuth.accessToken,
+  //     idToken: googleAuth.idToken,
+  //   );
 
-    final FBA.GoogleAuthCredential credential = FBA.GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    await auth.signInWithCredential(credential);
-  }
-
-
+  //   await auth.signInWithCredential(credential);
+  // }
 }
 
 Future<Null> _setUpNotifications() async {
   if (Platform.isAndroid) {
+    // _firebaseMessaging.getToken().then((token) {
+    //   print("Firebase Messaging Token: " + token);
 
-    _firebaseMessaging.getToken().then((token) {
-      print("Firebase Messaging Token: " + token);
-
-      FirebaseFirestore.instance
-          .collection("insta_users")
-          .doc(currentUserModel.id)
-          .update({"androidNotificationToken": token});
-    });
+    //   FirebaseFirestore.instance
+    //       .collection("insta_users")
+    //       .doc(currentUserModel.id)
+    //       .update({"androidNotificationToken": token});
+    // });
   }
 }
 
 Future<void> tryCreateUserRecord(BuildContext context) async {
-  GoogleSignInAccount user = googleSignIn.currentUser;
-  if (user == null) {
-    return null;
-  }
-  DocumentSnapshot userRecord = await ref.doc(user.id).get();
-  if (userRecord.data() == null) {
-    // no user record exists, time to create
+  // GoogleSignInAccount user = googleSignIn.currentUser;
+  // if (user == null) {
+  //   return null;
+  // }
+  // DocumentSnapshot userRecord = await ref.doc(user.id).get();
+  // if (userRecord.data() == null) {
+  //   // no user record exists, time to create
 
-    String userName = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Center(
-                child: Scaffold(
-                    appBar: AppBar(
-                      leading: Container(),
-                      title: Text('Fill out missing data',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                      backgroundColor: Colors.white,
-                    ),
-                    body: ListView(
-                      children: <Widget>[
-                        Container(
-                          child: CreateAccount(),
-                        ),
-                      ],
-                    )),
-              )),
-    );
+  //   String userName = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => Center(
+  //               child: Scaffold(
+  //                   appBar: AppBar(
+  //                     leading: Container(),
+  //                     title: Text('Fill out missing data',
+  //                         style: TextStyle(
+  //                             color: Colors.black,
+  //                             fontWeight: FontWeight.bold)),
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //                   body: ListView(
+  //                     children: <Widget>[
+  //                       Container(
+  //                         child: CreateAccount(),
+  //                       ),
+  //                     ],
+  //                   )),
+  //             )),
+  //   );
 
-    if (userName != null || userName.length != 0) {
-      ref.doc(user.id).set({
-        "id": user.id,
-        "username": userName,
-        "photoUrl": user.photoUrl,
-        "email": user.email,
-        "displayName": user.displayName,
-        "bio": "",
-        "followers": {},
-        "following": {},
-      });
-    }
-    userRecord = await ref.doc(user.id).get();
-  }
+  //   if (userName != null || userName.length != 0) {
+  //     ref.doc(user.id).set({
+  //       "id": user.id,
+  //       "username": userName,
+  //       "photoUrl": user.photoUrl,
+  //       "email": user.email,
+  //       "displayName": user.displayName,
+  //       "bio": "",
+  //       "followers": {},
+  //       "following": {},
+  //     });
+  //   }
+  //   userRecord = await ref.doc(user.id).get();
+  // }
 
-  currentUserModel = User.fromDocument(userRecord);
+  // currentUserModel = User.fromDocument(userRecord);
   return null;
 }
 
@@ -223,15 +220,17 @@ class _HomePageState extends State<HomePage> {
       setUpNotifications();
     }
 
-    if (!firebaseInitialized) return CircularProgressIndicator();
+    // if (!firebaseInitialized) return CircularProgressIndicator();
 
-    auth.authStateChanges().listen((event) {
-      if (event == null) {
-        silentLogin(context);
-      }
-    });
+    // auth.authStateChanges().listen((event) {
+    //   if (event == null) {
+    //     silentLogin(context);
+    //   }
+    // });
 
-    return (googleSignIn.currentUser == null || currentUserModel == null)
+    // return (googleSignIn.currentUser == null || currentUserModel == null)
+    // return (currentUserModel == null)
+    return (false)
         ? buildLoginPage()
         : Scaffold(
             body: PageView(
@@ -245,13 +244,12 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   child: Uploader(),
                 ),
-                Container(
-                    color: Colors.white, child: ActivityFeedPage()),
+                Container(color: Colors.white, child: ActivityFeedPage()),
                 Container(
                     color: Colors.white,
                     child: ProfilePage(
-                      userId: googleSignIn.currentUser.id,
-                    )),
+                        // userId: googleSignIn.currentUser.id,
+                        )),
               ],
               controller: pageController,
               physics: NeverScrollableScrollPhysics(),
@@ -293,7 +291,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void login() async {
-    await _ensureLoggedIn(context);
+    // await _ensureLoggedIn(context);
+    // var res = await AmplifyService().Auth.signinGoogle();
+    // final GoogleSignInAccount account = await GoogleSignIn().signIn();
     setState(() {
       triedSilentLogin = true;
     });
@@ -327,11 +327,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Firebase.initializeApp().then((_) {
-     setState(() {
-       firebaseInitialized= true;
-     });
-    });
+    AmplifyService().init();
+
     pageController = PageController();
   }
 

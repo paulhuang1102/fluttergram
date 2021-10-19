@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 import 'main.dart';
 import 'dart:io';
 import 'location.dart';
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
 
 class Uploader extends StatefulWidget {
   _Uploader createState() => _Uploader();
@@ -16,7 +16,8 @@ class Uploader extends StatefulWidget {
 class _Uploader extends State<Uploader> {
   File file;
   //Strings required to save address
-  Address address;
+  // Address address;
+  var address;
 
   Map<String, double> currentLocation = Map();
   TextEditingController descriptionController = TextEditingController();
@@ -36,10 +37,10 @@ class _Uploader extends State<Uploader> {
 
   //method to get Location and save into variables
   initPlatformState() async {
-    Address first = await getUserLocation();
-    setState(() {
-      address = first;
-    });
+    // Address first = await getUserLocation();
+    // setState(() {
+    //   address = first;
+    // });
   }
 
   Widget build(BuildContext context) {
@@ -265,27 +266,28 @@ class PostForm extends StatelessWidget {
 
 Future<String> uploadImage(var imageFile) async {
   var uuid = Uuid().v1();
-  Reference ref = FirebaseStorage.instance.ref().child("post_$uuid.jpg");
-  UploadTask uploadTask = ref.putFile(imageFile);
+  // Reference ref = FirebaseStorage.instance.ref().child("post_$uuid.jpg");
+  // UploadTask uploadTask = ref.putFile(imageFile);
 
-  String downloadUrl = await (await uploadTask).ref.getDownloadURL();
-  return downloadUrl;
+  // String downloadUrl = await (await uploadTask).ref.getDownloadURL();
+  // return downloadUrl;
+  return '';
 }
 
 void postToFireStore(
     {String mediaUrl, String location, String description}) async {
-  var reference = FirebaseFirestore.instance.collection('insta_posts');
+  // var reference = FirebaseFirestore.instance.collection('insta_posts');
 
-  reference.add({
-    "username": currentUserModel.username,
-    "location": location,
-    "likes": {},
-    "mediaUrl": mediaUrl,
-    "description": description,
-    "ownerId": googleSignIn.currentUser.id,
-    "timestamp": DateTime.now(),
-  }).then((DocumentReference doc) {
-    String docId = doc.id;
-    reference.doc(docId).update({"postId": docId});
-  });
+  // reference.add({
+  //   "username": currentUserModel.username,
+  //   "location": location,
+  //   "likes": {},
+  //   "mediaUrl": mediaUrl,
+  //   "description": description,
+  //   // "ownerId": googleSignIn.currentUser.id,
+  //   "timestamp": DateTime.now(),
+  // }).then((DocumentReference doc) {
+  //   String docId = doc.id;
+  //   reference.doc(docId).update({"postId": docId});
+  // });
 }

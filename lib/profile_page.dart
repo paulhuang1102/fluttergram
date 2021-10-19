@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
 import 'image_post.dart';
 import 'dart:async';
@@ -17,7 +17,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage>
     with AutomaticKeepAliveClientMixin<ProfilePage> {
   final String profileId;
-  String currentUserId = googleSignIn.currentUser.id;
+  // String currentUserId = googleSignIn.currentUser.id;
   String view = "grid"; // default view
   bool isFollowing = false;
   bool followButtonClicked = false;
@@ -74,54 +74,54 @@ class _ProfilePage extends State<ProfilePage>
       followButtonClicked = true;
     });
 
-    FirebaseFirestore.instance.doc("insta_users/$profileId").update({
-      'followers.$currentUserId': true
-      //firestore plugin doesnt support deleting, so it must be nulled / falsed
-    });
+  //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
+  //     'followers.$currentUserId': true
+  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+  //   });
 
-    FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
-      'following.$profileId': true
-      //firestore plugin doesnt support deleting, so it must be nulled / falsed
-    });
+  //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
+  //     'following.$profileId': true
+  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+  //   });
 
-    //updates activity feed
-    FirebaseFirestore.instance
-        .collection("insta_a_feed")
-        .doc(profileId)
-        .collection("items")
-        .doc(currentUserId)
-        .set({
-      "ownerId": profileId,
-      "username": currentUserModel.username,
-      "userId": currentUserId,
-      "type": "follow",
-      "userProfileImg": currentUserModel.photoUrl,
-      "timestamp": DateTime.now()
-    });
-  }
+  //   //updates activity feed
+  //   FirebaseFirestore.instance
+  //       .collection("insta_a_feed")
+  //       .doc(profileId)
+  //       .collection("items")
+  //       .doc(currentUserId)
+  //       .set({
+  //     "ownerId": profileId,
+  //     "username": currentUserModel.username,
+  //     "userId": currentUserId,
+  //     "type": "follow",
+  //     "userProfileImg": currentUserModel.photoUrl,
+  //     "timestamp": DateTime.now()
+  //   });
+  // }
 
-  unfollowUser() {
-    setState(() {
-      isFollowing = false;
-      followButtonClicked = true;
-    });
+  // unfollowUser() {
+  //   setState(() {
+  //     isFollowing = false;
+  //     followButtonClicked = true;
+  //   });
 
-    FirebaseFirestore.instance.doc("insta_users/$profileId").update({
-      'followers.$currentUserId': false
-      //firestore plugin doesnt support deleting, so it must be nulled / falsed
-    });
+  //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
+  //     'followers.$currentUserId': false
+  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+  //   });
 
-    FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
-      'following.$profileId': false
-      //firestore plugin doesnt support deleting, so it must be nulled / falsed
-    });
+  //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
+  //     'following.$profileId': false
+  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+  //   });
 
-    FirebaseFirestore.instance
-        .collection("insta_a_feed")
-        .doc(profileId)
-        .collection("items")
-        .doc(currentUserId)
-        .delete();
+  //   FirebaseFirestore.instance
+  //       .collection("insta_a_feed")
+  //       .doc(profileId)
+  //       .collection("items")
+  //       .doc(currentUserId)
+  //       .delete();
   }
 
   @override
@@ -177,26 +177,26 @@ class _ProfilePage extends State<ProfilePage>
 
     Container buildProfileFollowButton(User user) {
       // viewing your own profile - should show edit button
-      if (currentUserId == profileId) {
-        return buildFollowButton(
-          text: "Edit Profile",
-          backgroundcolor: Colors.white,
-          textColor: Colors.black,
-          borderColor: Colors.grey,
-          function: editProfile,
-        );
-      }
+      // if (currentUserId == profileId) {
+      //   return buildFollowButton(
+      //     text: "Edit Profile",
+      //     backgroundcolor: Colors.white,
+      //     textColor: Colors.black,
+      //     borderColor: Colors.grey,
+      //     function: editProfile,
+      //   );
+      // }
 
-      // already following user - should show unfollow button
-      if (isFollowing) {
-        return buildFollowButton(
-          text: "Unfollow",
-          backgroundcolor: Colors.white,
-          textColor: Colors.black,
-          borderColor: Colors.grey,
-          function: unfollowUser,
-        );
-      }
+      // // already following user - should show unfollow button
+      // if (isFollowing) {
+      //   return buildFollowButton(
+      //     text: "Unfollow",
+      //     backgroundcolor: Colors.white,
+      //     textColor: Colors.black,
+      //     borderColor: Colors.grey,
+      //     function: unfollowUser,
+      //   );
+      // }
 
       // does not follow user - should show follow button
       if (!isFollowing) {
@@ -247,17 +247,17 @@ class _ProfilePage extends State<ProfilePage>
     Container buildUserPosts() {
       Future<List<ImagePost>> getPosts() async {
         List<ImagePost> posts = [];
-        var snap = await FirebaseFirestore.instance
-            .collection('insta_posts')
-            .where('ownerId', isEqualTo: profileId)
-            .orderBy("timestamp")
-            .get();
-        for (var doc in snap.docs) {
-          posts.add(ImagePost.fromDocument(doc));
-        }
-        setState(() {
-          postCount = snap.docs.length;
-        });
+        // var snap = await FirebaseFirestore.instance
+        //     .collection('insta_posts')
+        //     .where('ownerId', isEqualTo: profileId)
+        //     .orderBy("timestamp")
+        //     .get();
+        // for (var doc in snap.docs) {
+        //   posts.add(ImagePost.fromDocument(doc));
+        // }
+        // setState(() {
+        //   postCount = snap.docs.length;
+        // });
 
         return posts.reversed.toList();
       }
@@ -295,23 +295,25 @@ class _ProfilePage extends State<ProfilePage>
     }
 
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('insta_users')
-            .doc(profileId)
-            .snapshots(),
+        // stream: FirebaseFirestore.instance
+        //     .collection('insta_users')
+        //     .doc(profileId)
+        //     .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Container(
                 alignment: FractionalOffset.center,
                 child: CircularProgressIndicator());
 
-          User user = User.fromDocument(snapshot.data);
 
-          if (user.followers.containsKey(currentUserId) &&
-              user.followers[currentUserId] &&
-              followButtonClicked == false) {
-            isFollowing = true;
-          }
+          // User user = User.fromDocument(snapshot.data);
+          User user = null;
+
+          // if (user.followers.containsKey(currentUserId) &&
+          //     user.followers[currentUserId] &&
+          //     followButtonClicked == false) {
+          //   isFollowing = true;
+          // }
 
           return Scaffold(
               appBar: AppBar(

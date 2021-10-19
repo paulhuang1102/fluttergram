@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'image_post.dart'; //needed to open image when clicked
 import 'profile_page.dart'; // to open the profile page when username clicked
 import 'main.dart'; //needed for currentuser id
@@ -45,17 +45,17 @@ class _ActivityFeedPageState extends State<ActivityFeedPage> with AutomaticKeepA
 
   getFeed() async {
     List<ActivityFeedItem> items = [];
-    var snap = await FirebaseFirestore.instance
-        .collection('insta_a_feed')
-        .doc(currentUserModel.id)
-        .collection("items")
-        .orderBy("timestamp")
-        .get();
+    // var snap = await FirebaseFirestore.instance
+    //     .collection('insta_a_feed')
+    //     .doc(currentUserModel.id)
+    //     .collection("items")
+    //     .orderBy("timestamp")
+    //     .get();
 
-    for (var doc in snap.docs) {
-      items.add(ActivityFeedItem.fromDocument(doc));
-    }
-    return items;
+    // for (var doc in snap.docs) {
+    //   items.add(ActivityFeedItem.fromDocument(doc));
+    // }
+    // return items;
   }
 
   // ensures state is kept when switching pages
@@ -83,18 +83,18 @@ class ActivityFeedItem extends StatelessWidget {
       this.userProfileImg,
       this.commentData});
 
-  factory ActivityFeedItem.fromDocument(DocumentSnapshot document) {
-    var data = document.data();
-    return ActivityFeedItem(
-      username: data['username'],
-      userId: data['userId'],
-      type: data['type'],
-      mediaUrl: data['mediaUrl'],
-      mediaId: data['postId'],
-      userProfileImg: data['userProfileImg'],
-      commentData: data["commentData"],
-    );
-  }
+  // factory ActivityFeedItem.fromDocument(DocumentSnapshot document) {
+  //   var data = document.data();
+  //   return ActivityFeedItem(
+  //     username: data['username'],
+  //     userId: data['userId'],
+  //     type: data['type'],
+  //     mediaUrl: data['mediaUrl'],
+  //     mediaId: data['postId'],
+  //     userProfileImg: data['userProfileImg'],
+  //     commentData: data["commentData"],
+  //   );
+  // }
 
   Widget mediaPreview = Container();
   String actionText;
