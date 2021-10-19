@@ -197,12 +197,13 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(padding: const EdgeInsets.only(bottom: 100.0)),
               GestureDetector(
-                onTap: login,
+                onTap: googleLogin,
                 child: Image.asset(
                   "assets/images/google_signin_button.png",
                   width: 225.0,
                 ),
-              )
+              ),
+              ElevatedButton(onPressed: fbLogin, child: Text('Facebook'))
             ],
           ),
         ),
@@ -230,7 +231,7 @@ class _HomePageState extends State<HomePage> {
 
     // return (googleSignIn.currentUser == null || currentUserModel == null)
     // return (currentUserModel == null)
-    return (false)
+    return (true)
         ? buildLoginPage()
         : Scaffold(
             body: PageView(
@@ -290,10 +291,19 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  void login() async {
+  void googleLogin() async {
     // await _ensureLoggedIn(context);
-    // var res = await AmplifyService().Auth.signinGoogle();
+    var res = await AmplifyService().Auth.signinGoogle();
+    // var res = await AmplifyService().Auth.signFB();
     // final GoogleSignInAccount account = await GoogleSignIn().signIn();
+    setState(() {
+      triedSilentLogin = true;
+    });
+  }
+
+  void fbLogin() async {
+    // await _ensureLoggedIn(context);
+    var res = await AmplifyService().Auth.signFB();
     setState(() {
       triedSilentLogin = true;
     });

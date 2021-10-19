@@ -50,11 +50,6 @@ PODS:
     - AWSCore (~> 2.26.1)
     - AWSPluginsCore (= 1.15.2)
     - AWSS3 (~> 2.26.1)
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
   - AppSyncRealTimeClient (1.5.0):
     - Starscream (~> 3.1.1)
   - AWSAuthCore (2.26.1):
@@ -80,17 +75,6 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - google_sign_in (0.0.1):
-    - Flutter
-    - GoogleSignIn (~> 5.0)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
-  - GTMAppAuth (1.2.2):
-    - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.7.0)
   - image_picker (0.0.1):
     - Flutter
   - location (0.0.1):
@@ -111,7 +95,6 @@ DEPENDENCIES:
   - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
   - amplify_storage_s3 (from `.symlinks/plugins/amplify_storage_s3/ios`)
   - Flutter (from `Flutter`)
-  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -121,7 +104,6 @@ SPEC REPOS:
   trunk:
     - Amplify
     - AmplifyPlugins
-    - AppAuth
     - AppSyncRealTimeClient
     - AWSAuthCore
     - AWSCognitoIdentityProvider
@@ -132,9 +114,6 @@ SPEC REPOS:
     - AWSPluginsCore
     - AWSS3
     - FMDB
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
     - ObjectMapper
     - Starscream
 
@@ -153,8 +132,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/amplify_storage_s3/ios"
   Flutter:
     :path: Flutter
-  google_sign_in:
-    :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   location:
@@ -173,7 +150,6 @@ SPEC CHECKSUMS:
   amplify_flutter: 4502b83ab61612fb34212b0c69c26d09c27197b5
   amplify_storage_s3: d6563032b2becca861a87dd09c03fcc91fc89141
   AmplifyPlugins: bf1558a4efb6ed94b80eff7a20fda020322409e3
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppSyncRealTimeClient: 2b4482b1770a3e5cf64f9714a6d198550017b5a2
   AWSAuthCore: 264faaa6af5990af2c77effe8f398a4b80e6c44e
   AWSCognitoIdentityProvider: 5df455775b57eb4e61862acd88d93e56113950c4
@@ -185,10 +161,6 @@ SPEC CHECKSUMS:
   AWSS3: 9795c8568c36424f86bc881217dacf09263d40bc
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  google_sign_in: c5cecea71f3be43282263550556e311c4cc03582
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
