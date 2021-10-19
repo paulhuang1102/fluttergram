@@ -22,7 +22,7 @@ import 'models/user.dart';
 // final ref = FirebaseFirestore.instance.collection('insta_users');
 // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-User currentUserModel;
+User? currentUserModel;
 
 Future<void> main() async {
   WidgetsFlutterBinding
@@ -166,14 +166,14 @@ class Fluttergram extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({required this.title}) : super();
   final String title;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-PageController pageController;
+PageController? pageController;
 
 class _HomePageState extends State<HomePage> {
   int _page = 0;
@@ -325,7 +325,7 @@ class _HomePageState extends State<HomePage> {
 
   void navigationTapped(int page) {
     //Animating Page
-    pageController.jumpToPage(page);
+    pageController!.jumpToPage(page);
   }
 
   void onPageChanged(int page) {
@@ -345,6 +345,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
-    pageController.dispose();
+    pageController!.dispose();
   }
 }

@@ -14,7 +14,7 @@ class Uploader extends StatefulWidget {
 }
 
 class _Uploader extends State<Uploader> {
-  File file;
+  File? file;
   //Strings required to save address
   // Address address;
   var address;
@@ -145,20 +145,20 @@ class _Uploader extends State<Uploader> {
                 child: const Text('Take a photo'),
                 onPressed: () async {
                   Navigator.pop(context);
-                   PickedFile imageFile =
+                   PickedFile? imageFile =
                       await imagePicker.getImage(source: ImageSource.camera, maxWidth: 1920, maxHeight: 1200, imageQuality: 80);
                   setState(() {
-                    file = File(imageFile.path);
+                    file = File(imageFile!.path);
                   });
                 }),
             SimpleDialogOption(
                 child: const Text('Choose from Gallery'),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  PickedFile imageFile =
+                  PickedFile? imageFile =
                       await imagePicker.getImage(source: ImageSource.gallery, maxWidth: 1920, maxHeight: 1200, imageQuality: 80);
                   setState(() {
-                    file = File(imageFile.path);
+                    file = File(imageFile!.path);
                   });
                 }),
             SimpleDialogOption(
@@ -204,9 +204,9 @@ class PostForm extends StatelessWidget {
   final bool loading;
   PostForm(
       {this.imageFile,
-      this.descriptionController,
-      this.loading,
-      this.locationController});
+      required this.descriptionController,
+      required this.loading,
+      required this.locationController});
 
   Widget build(BuildContext context) {
     return Column(
@@ -218,9 +218,9 @@ class PostForm extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            CircleAvatar(
-              backgroundImage: NetworkImage(currentUserModel.photoUrl),
-            ),
+            // CircleAvatar(
+            //   backgroundImage: NetworkImage(currentUserModel.photoUrl),
+            // ),
             Container(
               width: 250.0,
               child: TextField(
@@ -275,7 +275,7 @@ Future<String> uploadImage(var imageFile) async {
 }
 
 void postToFireStore(
-    {String mediaUrl, String location, String description}) async {
+    {String? mediaUrl, String? location, String? description}) async {
   // var reference = FirebaseFirestore.instance.collection('insta_posts');
 
   // reference.add({

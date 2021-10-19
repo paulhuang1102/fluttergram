@@ -89,14 +89,14 @@ class UserSearchItem extends StatelessWidget {
     return GestureDetector(
         child: ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(user.photoUrl),
+            backgroundImage: NetworkImage(user.photoUrl!),
             backgroundColor: Colors.grey,
           ),
-          title: Text(user.username, style: boldStyle),
-          subtitle: Text(user.displayName),
+          title: Text(user.username!, style: boldStyle),
+          subtitle: Text(user.displayName!),
         ),
         onTap: () {
-          openProfile(context, user.id);
+          openProfile(context, user.id!);
         });
   }
 }

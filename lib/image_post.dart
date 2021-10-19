@@ -10,13 +10,13 @@ import 'package:flare_flutter/flare_actor.dart';
 
 class ImagePost extends StatefulWidget {
   const ImagePost(
-      {this.mediaUrl,
-      this.username,
-      this.location,
-      this.description,
+      {required this.mediaUrl,
+      required this.username,
+      required this.location,
+      required this.description,
       this.likes,
-      this.postId,
-      this.ownerId});
+      required this.postId,
+      required this.ownerId});
 
   // factory ImagePost.fromDocument(DocumentSnapshot document) {
   //   return ImagePost(
@@ -86,7 +86,7 @@ class _ImagePost extends State<ImagePost> {
   Map likes;
   int likeCount;
   final String postId;
-  bool liked;
+  bool? liked;
   final String ownerId;
 
   bool showHeart = false;
@@ -99,20 +99,20 @@ class _ImagePost extends State<ImagePost> {
   // var reference = FirebaseFirestore.instance.collection('insta_posts');
 
   _ImagePost(
-      {this.mediaUrl,
-      this.username,
-      this.location,
-      this.description,
-      this.likes,
-      this.postId,
-      this.likeCount,
-      this.ownerId});
+      {required this.mediaUrl,
+      required this.username,
+      required this.location,
+      required this.description,
+      required this.likes,
+      required this.postId,
+      required this.likeCount,
+      required this.ownerId});
 
   GestureDetector buildLikeIcon() {
-    Color color;
+    Color? color;
     IconData icon;
 
-    if (liked) {
+    if (liked!) {
       color = Colors.pink;
       icon = FontAwesomeIcons.solidHeart;
     } else {
@@ -147,9 +147,10 @@ class _ImagePost extends State<ImagePost> {
                   child: Container(
                     width: 100,
                     height: 100,
-                    child:  Opacity(
+                    child: Opacity(
                         opacity: 0.85,
-                        child: FlareActor("assets/flare/Like.flr",
+                        child: FlareActor(
+                          "assets/flare/Like.flr",
                           animation: "Like",
                         )),
                   ),
@@ -160,7 +161,7 @@ class _ImagePost extends State<ImagePost> {
     );
   }
 
-  buildPostHeader({String ownerId}) {
+  buildPostHeader({String? ownerId}) {
     if (ownerId == null) {
       return Text("owner error");
     }
@@ -171,27 +172,26 @@ class _ImagePost extends State<ImagePost> {
         //     .doc(ownerId)
         //     .get(),
         builder: (context, snapshot) {
+      if (snapshot.data != null) {
+        return ListTile(
+          // leading: CircleAvatar(
+          //   backgroundImage: CachedNetworkImageProvider(snapshot.data.data()['photoUrl']),
+          //   backgroundColor: Colors.grey,
+          // ),
+          // title: GestureDetector(
+          //   child: Text(snapshot.data.data()['username'], style: boldStyle),
+          //   onTap: () {
+          //     openProfile(context, ownerId);
+          //   },
+          // ),
+          subtitle: Text(this.location),
+          trailing: const Icon(Icons.more_vert),
+        );
+      }
 
-          if (snapshot.data != null) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(snapshot.data.data()['photoUrl']),
-                backgroundColor: Colors.grey,
-              ),
-              title: GestureDetector(
-                child: Text(snapshot.data.data()['username'], style: boldStyle),
-                onTap: () {
-                  openProfile(context, ownerId);
-                },
-              ),
-              subtitle: Text(this.location),
-              trailing: const Icon(Icons.more_vert),
-            );
-          }
-
-          // snapshot data is null here
-          return Container();
-        });
+      // snapshot data is null here
+      return Container();
+    });
   }
 
   Container loadingPlaceHolder = Container(
@@ -326,7 +326,7 @@ class _ImagePost extends State<ImagePost> {
 class ImagePostFromId extends StatelessWidget {
   final String id;
 
-  const ImagePostFromId({this.id});
+  const ImagePostFromId({required this.id});
 
   getImagePost() async {
     // var document =
@@ -344,14 +344,17 @@ class ImagePostFromId extends StatelessWidget {
                 alignment: FractionalOffset.center,
                 padding: const EdgeInsets.only(top: 10.0),
                 child: CircularProgressIndicator());
-          return snapshot.data;
+          return snapshot.data as Widget;
         });
   }
 }
 
 void goToComments(
-    {BuildContext context, String postId, String ownerId, String mediaUrl}) {
-  Navigator.of(context)
+    {BuildContext? context,
+    required String postId,
+    required String ownerId,
+    required String mediaUrl}) {
+  Navigator.of(context!)
       .push(MaterialPageRoute<bool>(builder: (BuildContext context) {
     return CommentScreen(
       postId: postId,

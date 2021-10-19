@@ -10,7 +10,7 @@ class Feed extends StatefulWidget {
 }
 
 class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
-  List<ImagePost> feedData;
+  List<ImagePost>? feedData;
 
   @override
   void initState() {
@@ -21,7 +21,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   buildFeed() {
     if (feedData != null) {
       return ListView(
-        children: feedData,
+        children: feedData!,
       );
     } else {
       return Container(
@@ -64,9 +64,9 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     if (json != null) {
       // List<Map<String, dynamic>> data =
       //     jsonDecode(json).cast<Map<String, dynamic>>();
-      // List<ImagePost> listOfPosts = _generateFeed(data);
+      List<ImagePost> listOfPosts = _generateFeed([]);
       setState(() {
-        // feedData = listOfPosts;
+        feedData = listOfPosts;
       });
     } else {
       _getFeed();
@@ -79,8 +79,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // String userId = googleSignIn.currentUser.id.toString();
-    var url =
-        'https://us-central1-mp-rps.cloudfunctions.net/getFeed?uid=';
+    var url = 'https://us-central1-mp-rps.cloudfunctions.net/getFeed?uid=';
     var httpClient = HttpClient();
 
     List<ImagePost> listOfPosts;
@@ -95,6 +94,10 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
             jsonDecode(json).cast<Map<String, dynamic>>();
         listOfPosts = _generateFeed(data);
         result = "Success in http request for feed";
+
+        setState(() {
+          feedData = listOfPosts;
+        });
       } else {
         result =
             'Error getting a feed: Http status ${response.statusCode} | userId';
@@ -103,10 +106,6 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
       result = 'Failed invoking the getFeed function. Exception: $exception';
     }
     print(result);
-
-    setState(() {
-      feedData = listOfPosts;
-    });
   }
 
   List<ImagePost> _generateFeed(List<Map<String, dynamic>> feedData) {

@@ -9,14 +9,14 @@ import 'models/user.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({this.userId});
 
-  final String userId;
+  final String? userId;
 
   _ProfilePage createState() => _ProfilePage(this.userId);
 }
 
 class _ProfilePage extends State<ProfilePage>
     with AutomaticKeepAliveClientMixin<ProfilePage> {
-  final String profileId;
+  final String? profileId;
   // String currentUserId = googleSignIn.currentUser.id;
   String view = "grid"; // default view
   bool isFollowing = false;
@@ -74,54 +74,54 @@ class _ProfilePage extends State<ProfilePage>
       followButtonClicked = true;
     });
 
-  //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
-  //     'followers.$currentUserId': true
-  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
-  //   });
+    //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
+    //     'followers.$currentUserId': true
+    //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+    //   });
 
-  //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
-  //     'following.$profileId': true
-  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
-  //   });
+    //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
+    //     'following.$profileId': true
+    //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+    //   });
 
-  //   //updates activity feed
-  //   FirebaseFirestore.instance
-  //       .collection("insta_a_feed")
-  //       .doc(profileId)
-  //       .collection("items")
-  //       .doc(currentUserId)
-  //       .set({
-  //     "ownerId": profileId,
-  //     "username": currentUserModel.username,
-  //     "userId": currentUserId,
-  //     "type": "follow",
-  //     "userProfileImg": currentUserModel.photoUrl,
-  //     "timestamp": DateTime.now()
-  //   });
-  // }
+    //   //updates activity feed
+    //   FirebaseFirestore.instance
+    //       .collection("insta_a_feed")
+    //       .doc(profileId)
+    //       .collection("items")
+    //       .doc(currentUserId)
+    //       .set({
+    //     "ownerId": profileId,
+    //     "username": currentUserModel.username,
+    //     "userId": currentUserId,
+    //     "type": "follow",
+    //     "userProfileImg": currentUserModel.photoUrl,
+    //     "timestamp": DateTime.now()
+    //   });
+    // }
 
-  // unfollowUser() {
-  //   setState(() {
-  //     isFollowing = false;
-  //     followButtonClicked = true;
-  //   });
+    // unfollowUser() {
+    //   setState(() {
+    //     isFollowing = false;
+    //     followButtonClicked = true;
+    //   });
 
-  //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
-  //     'followers.$currentUserId': false
-  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
-  //   });
+    //   FirebaseFirestore.instance.doc("insta_users/$profileId").update({
+    //     'followers.$currentUserId': false
+    //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+    //   });
 
-  //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
-  //     'following.$profileId': false
-  //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
-  //   });
+    //   FirebaseFirestore.instance.doc("insta_users/$currentUserId").update({
+    //     'following.$profileId': false
+    //     //firestore plugin doesnt support deleting, so it must be nulled / falsed
+    //   });
 
-  //   FirebaseFirestore.instance
-  //       .collection("insta_a_feed")
-  //       .doc(profileId)
-  //       .collection("items")
-  //       .doc(currentUserId)
-  //       .delete();
+    //   FirebaseFirestore.instance
+    //       .collection("insta_a_feed")
+    //       .doc(profileId)
+    //       .collection("items")
+    //       .doc(currentUserId)
+    //       .delete();
   }
 
   @override
@@ -151,11 +151,11 @@ class _ProfilePage extends State<ProfilePage>
     }
 
     Container buildFollowButton(
-        {String text,
-        Color backgroundcolor,
-        Color textColor,
-        Color borderColor,
-        Function function}) {
+        {required String text,
+        required Color backgroundcolor,
+        required Color textColor,
+        required Color borderColor,
+        Function()? function}) {
       return Container(
         padding: EdgeInsets.only(top: 2.0),
         child: FlatButton(
@@ -167,8 +167,8 @@ class _ProfilePage extends State<ProfilePage>
                   borderRadius: BorderRadius.circular(5.0)),
               alignment: Alignment.center,
               child: Text(text,
-                  style: TextStyle(
-                      color: textColor, fontWeight: FontWeight.bold)),
+                  style:
+                      TextStyle(color: textColor, fontWeight: FontWeight.bold)),
               width: 250.0,
               height: 27.0,
             )),
@@ -281,15 +281,17 @@ class _ProfilePage extends State<ProfilePage>
                 crossAxisSpacing: 1.5,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                children: snapshot.data.map((ImagePost imagePost) {
+                children: snapshot.data!.map((ImagePost imagePost) {
                   return GridTile(child: ImageTile(imagePost));
                 }).toList());
           } else if (view == "feed") {
             return Column(
-                children: snapshot.data.map((ImagePost imagePost) {
+                children: snapshot.data!.map((ImagePost imagePost) {
               return imagePost;
             }).toList());
           }
+
+          return SizedBox();
         },
       ));
     }
@@ -300,91 +302,90 @@ class _ProfilePage extends State<ProfilePage>
         //     .doc(profileId)
         //     .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Container(
-                alignment: FractionalOffset.center,
-                child: CircularProgressIndicator());
+      if (!snapshot.hasData)
+        return Container(
+            alignment: FractionalOffset.center,
+            child: CircularProgressIndicator());
 
+      // User user = User.fromDocument(snapshot.data);
+      User? user;
 
-          // User user = User.fromDocument(snapshot.data);
-          User user = null;
+      // if (user.followers.containsKey(currentUserId) &&
+      //     user.followers[currentUserId] &&
+      //     followButtonClicked == false) {
+      //   isFollowing = true;
+      // }
 
-          // if (user.followers.containsKey(currentUserId) &&
-          //     user.followers[currentUserId] &&
-          //     followButtonClicked == false) {
-          //   isFollowing = true;
-          // }
-
-          return Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  user.username,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Colors.white,
-              ),
-              body: ListView(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              user!.username!,
+              style: const TextStyle(color: Colors.black),
+            ),
+            backgroundColor: Colors.white,
+          ),
+          body: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 40.0,
-                              backgroundColor: Colors.grey,
-                              backgroundImage: NetworkImage(user.photoUrl),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
+                        CircleAvatar(
+                          radius: 40.0,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: NetworkImage(user.photoUrl!),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      buildStatColumn("posts", postCount),
-                                      buildStatColumn("followers",
-                                          _countFollowings(user.followers)),
-                                      buildStatColumn("following",
-                                          _countFollowings(user.following)),
-                                    ],
-                                  ),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        buildProfileFollowButton(user)
-                                      ]),
+                                  buildStatColumn("posts", postCount),
+                                  buildStatColumn("followers",
+                                      _countFollowings(user.followers!)),
+                                  buildStatColumn("following",
+                                      _countFollowings(user.following!)),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.only(top: 15.0),
-                            child: Text(
-                              user.displayName,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(top: 1.0),
-                          child: Text(user.bio),
-                        ),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    buildProfileFollowButton(user)
+                                  ]),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                  Divider(),
-                  buildImageViewButtonBar(),
-                  Divider(height: 0.0),
-                  buildUserPosts(),
-                ],
-              ));
-        });
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Text(
+                          user.displayName!,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(top: 1.0),
+                      child: Text(user.bio!),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
+              buildImageViewButtonBar(),
+              Divider(height: 0.0),
+              buildUserPosts(),
+            ],
+          ));
+    });
   }
 
   changeView(String viewName) {

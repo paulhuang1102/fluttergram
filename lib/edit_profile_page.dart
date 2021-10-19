@@ -36,7 +36,7 @@ class EditProfilePage extends StatelessWidget {
     // });
   }
 
-  Widget buildTextField({String name, TextEditingController controller}) {
+  Widget buildTextField({required String name, required TextEditingController controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -70,18 +70,17 @@ class EditProfilePage extends StatelessWidget {
                 alignment: FractionalOffset.center,
                 child: CircularProgressIndicator());
 
-          // User user = User.fromDocument(snapshot.data);
-          User user = null;
+          User user = User.fromDocument({});
 
-          nameController.text = user.displayName;
-          bioController.text = user.bio;
+          nameController.text = user.displayName!;
+          bioController.text = user.bio!;
 
           return Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(currentUserModel.photoUrl),
+                  backgroundImage: NetworkImage(currentUserModel!.photoUrl!),
                   radius: 50.0,
                 ),
               ),
@@ -126,7 +125,7 @@ class EditProfilePage extends StatelessWidget {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.clear();
 
-    currentUserModel = null;
+    // currentUserModel = null;
 
     Navigator.pop(context);
   }

@@ -37,7 +37,8 @@ class _ActivityFeedPageState extends State<ActivityFeedPage> with AutomaticKeepA
                   padding: const EdgeInsets.only(top: 10.0),
                   child: CircularProgressIndicator());
             else {
-              return ListView(children: snapshot.data);
+              // return ListView(children: snapshot.data);
+              return SizedBox();
             }
           }),
     );
@@ -65,23 +66,23 @@ class _ActivityFeedPageState extends State<ActivityFeedPage> with AutomaticKeepA
 }
 
 class ActivityFeedItem extends StatelessWidget {
-  final String username;
-  final String userId;
-  final String
+  late final String username;
+  late final String userId;
+  late final String
       type; // types include liked photo, follow user, comment on photo
-  final String mediaUrl;
-  final String mediaId;
-  final String userProfileImg;
-  final String commentData;
+  late final String mediaUrl;
+  late final String mediaId;
+  late final String userProfileImg;
+  late final String commentData;
 
   ActivityFeedItem(
-      {this.username,
-      this.userId,
-      this.type,
-      this.mediaUrl,
-      this.mediaId,
-      this.userProfileImg,
-      this.commentData});
+      {required this.username,
+      required this.userId,
+      required this.type,
+      required this.mediaUrl,
+      required this.mediaId,
+      required this.userProfileImg,
+      required this.commentData});
 
   // factory ActivityFeedItem.fromDocument(DocumentSnapshot document) {
   //   var data = document.data();
@@ -97,7 +98,7 @@ class ActivityFeedItem extends StatelessWidget {
   // }
 
   Widget mediaPreview = Container();
-  String actionText;
+  String? actionText;
 
   void configureItem(BuildContext context) {
     if (type == "like" || type == "comment") {
@@ -163,7 +164,7 @@ class ActivityFeedItem extends StatelessWidget {
               Flexible(
                 child: Container(
                   child: Text(
-                    actionText,
+                    actionText!,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

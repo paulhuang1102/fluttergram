@@ -8,7 +8,10 @@ class CommentScreen extends StatefulWidget {
   final String postOwner;
   final String postMediaUrl;
 
-  const CommentScreen({this.postId, this.postOwner, this.postMediaUrl});
+  const CommentScreen(
+      {required this.postId,
+      required this.postOwner,
+      required this.postMediaUrl});
   @override
   _CommentScreenState createState() => _CommentScreenState(
       postId: this.postId,
@@ -26,7 +29,10 @@ class _CommentScreenState extends State<CommentScreen> {
 
   final TextEditingController _commentController = TextEditingController();
 
-  _CommentScreenState({this.postId, this.postOwner, this.postMediaUrl});
+  _CommentScreenState(
+      {required this.postId,
+      required this.postOwner,
+      required this.postMediaUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +52,7 @@ class _CommentScreenState extends State<CommentScreen> {
     return Column(
       children: [
         Expanded(
-          child:
-            buildComments(),
+          child: buildComments(),
         ),
         Divider(),
         ListTile(
@@ -56,15 +61,20 @@ class _CommentScreenState extends State<CommentScreen> {
             decoration: InputDecoration(labelText: 'Write a comment...'),
             onFieldSubmitted: addComment,
           ),
-          trailing: OutlineButton(onPressed: (){addComment(_commentController.text);}, borderSide: BorderSide.none, child: Text("Post"),),
+          trailing: OutlineButton(
+            onPressed: () {
+              addComment(_commentController.text);
+            },
+            borderSide: BorderSide.none,
+            child: Text("Post"),
+          ),
         ),
       ],
     );
   }
 
-
   Widget buildComments() {
-    if (this.didFetchComments == false){
+    if (this.didFetchComments == false) {
       return FutureBuilder<List<Comment>>(
           future: getComments(),
           builder: (context, snapshot) {
@@ -74,16 +84,14 @@ class _CommentScreenState extends State<CommentScreen> {
                   child: CircularProgressIndicator());
 
             this.didFetchComments = true;
-            this.fetchedComments = snapshot.data;
+            this.fetchedComments = snapshot.data!;
             return ListView(
-              children: snapshot.data,
+              children: snapshot.data!,
             );
           });
     } else {
       // for optimistic updating
-      return ListView(
-        children: this.fetchedComments
-      );
+      return ListView(children: this.fetchedComments);
     }
   }
 
@@ -133,13 +141,13 @@ class _CommentScreenState extends State<CommentScreen> {
 
     // add comment to the current listview for an optimistic update
     setState(() {
-      fetchedComments = List.from(fetchedComments)..add(Comment(
-          username: currentUserModel.username,
-          comment: comment,
-          // timestamp: Timestamp.now(),
-          avatarUrl: currentUserModel.photoUrl,
-          userId: currentUserModel.id
-      ));
+      fetchedComments = List.from(fetchedComments)
+        ..add(Comment(
+            username: currentUserModel!.username!,
+            comment: comment,
+            // timestamp: Timestamp.now(),
+            avatarUrl: currentUserModel!.photoUrl!,
+            userId: currentUserModel!.id!));
     });
   }
 }
@@ -151,13 +159,13 @@ class Comment extends StatelessWidget {
   final String comment;
   // final Timestamp timestamp;
 
-  Comment(
-      {this.username,
-      this.userId,
-      this.avatarUrl,
-      this.comment,
-      // this.timestamp,
-      });
+  Comment({
+    required this.username,
+    required this.userId,
+    required this.avatarUrl,
+    required this.comment,
+    // this.timestamp,
+  });
 
   // factory Comment.fromDocument(DocumentSnapshot document) {
   //   var data = document.data();
