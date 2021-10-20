@@ -1,34 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/instance_manager.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
-import 'feed.dart';
+import 'controllers/user_controller.dart';
+import 'repositories/user_repository.dart';
+import 'routes/app_pages.dart';
 import 'services/amplify/amplify_service.dart';
-import 'upload_page.dart';
 import 'dart:async';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:firebase_auth/firebase_auth.dart' as FBA;
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'profile_page.dart';
-import 'search_page.dart';
-import 'activity_feed.dart';
-import 'create_account.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
 import 'models/user.dart';
-
-// final auth = FBA.FirebaseAuth.instance;
-// final googleSignIn = GoogleSignIn();
-// final ref = FirebaseFirestore.instance.collection('insta_users');
-// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
 User? currentUserModel;
 
 Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // after upgrading flutter this is now necessary
+  await initialize();
+  runApp(MyApp(title: 'Fluttergram'));
+}
 
-  runApp(Fluttergram());
+initialize() async {
+  Get.lazyPut(() => UserController(UserRepository()));
 }
 
 Future<Null> _ensureLoggedIn(BuildContext context) async {
@@ -142,171 +135,35 @@ Future<void> tryCreateUserRecord(BuildContext context) async {
   return null;
 }
 
-class Fluttergram extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fluttergram',
-      theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-          // counter didn't reset back to zero; the application is not restarted.
-          primarySwatch: Colors.blue,
-          buttonColor: Colors.pink,
-          primaryIconTheme: IconThemeData(color: Colors.black)),
-      home: HomePage(title: 'Fluttergram'),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  HomePage({required this.title}) : super();
+class MyApp extends StatefulWidget {
+  MyApp({required this.title}) : super();
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _MyAppState createState() => _MyAppState();
 }
 
-PageController? pageController;
-
-class _HomePageState extends State<HomePage> {
-  int _page = 0;
+class _MyAppState extends State<MyApp> {
   bool triedSilentLogin = false;
   bool setupNotifications = false;
   bool firebaseInitialized = false;
 
-  Scaffold buildLoginPage() {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 240.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Fluttergram',
-                style: TextStyle(
-                    fontSize: 60.0,
-                    fontFamily: "Billabong",
-                    color: Colors.black),
-              ),
-              Padding(padding: const EdgeInsets.only(bottom: 100.0)),
-              GestureDetector(
-                onTap: googleLogin,
-                child: Image.asset(
-                  "assets/images/google_signin_button.png",
-                  width: 225.0,
-                ),
-              ),
-              ElevatedButton(onPressed: fbLogin, child: Text('Facebook'))
-            ],
-          ),
-        ),
-      ),
-    );
+  _init() async {
+    await AmplifyService().init();
+    await UserController.to.checkUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (triedSilentLogin == false) {
-      silentLogin(context);
-    }
-
-    if (setupNotifications == false && currentUserModel != null) {
-      setUpNotifications();
-    }
-
-    // if (!firebaseInitialized) return CircularProgressIndicator();
-
-    // auth.authStateChanges().listen((event) {
-    //   if (event == null) {
-    //     silentLogin(context);
-    //   }
-    // });
-
-    // return (googleSignIn.currentUser == null || currentUserModel == null)
-    // return (currentUserModel == null)
-    return (true)
-        ? buildLoginPage()
-        : Scaffold(
-            body: PageView(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Feed(),
-                ),
-                Container(color: Colors.white, child: SearchPage()),
-                Container(
-                  color: Colors.white,
-                  child: Uploader(),
-                ),
-                Container(color: Colors.white, child: ActivityFeedPage()),
-                Container(
-                    color: Colors.white,
-                    child: ProfilePage(
-                        // userId: googleSignIn.currentUser.id,
-                        )),
-              ],
-              controller: pageController,
-              physics: NeverScrollableScrollPhysics(),
-              onPageChanged: onPageChanged,
-            ),
-            bottomNavigationBar: CupertinoTabBar(
-              backgroundColor: Colors.white,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.home,
-                        color: (_page == 0) ? Colors.black : Colors.grey),
-                    title: Container(height: 0.0),
-                    backgroundColor: Colors.white),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.search,
-                        color: (_page == 1) ? Colors.black : Colors.grey),
-                    title: Container(height: 0.0),
-                    backgroundColor: Colors.white),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.add_circle,
-                        color: (_page == 2) ? Colors.black : Colors.grey),
-                    title: Container(height: 0.0),
-                    backgroundColor: Colors.white),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.star,
-                        color: (_page == 3) ? Colors.black : Colors.grey),
-                    title: Container(height: 0.0),
-                    backgroundColor: Colors.white),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.person,
-                        color: (_page == 4) ? Colors.black : Colors.grey),
-                    title: Container(height: 0.0),
-                    backgroundColor: Colors.white),
-              ],
-              onTap: navigationTapped,
-              currentIndex: _page,
-            ),
-          );
-  }
-
-  void googleLogin() async {
-    // await _ensureLoggedIn(context);
-    var res = await AmplifyService().Auth.signinGoogle();
-    // var res = await AmplifyService().Auth.signFB();
-    // final GoogleSignInAccount account = await GoogleSignIn().signIn();
-    setState(() {
-      triedSilentLogin = true;
-    });
-  }
-
-  void fbLogin() async {
-    // await _ensureLoggedIn(context);
-    var res = await AmplifyService().Auth.signFB();
-    setState(() {
-      triedSilentLogin = true;
-    });
+    return GetMaterialApp(
+      title: 'Fluttergram',
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          buttonColor: Colors.pink,
+          primaryIconTheme: IconThemeData(color: Colors.black)),
+      initialRoute: '/home',
+      getPages: AppPages.pages,
+    );
   }
 
   void setUpNotifications() {
@@ -323,28 +180,10 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void navigationTapped(int page) {
-    //Animating Page
-    pageController!.jumpToPage(page);
-  }
-
-  void onPageChanged(int page) {
-    setState(() {
-      this._page = page;
-    });
-  }
-
   @override
   void initState() {
+    _init();
+
     super.initState();
-    AmplifyService().init();
-
-    pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    pageController!.dispose();
   }
 }

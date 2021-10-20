@@ -1,33 +1,55 @@
-
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/route_manager.dart';
 
 import '../models/user.dart';
-import '../services/amplify/amplify_service.dart';
+import '../routes/app_pages.dart';
+import '../repositories/user_repository.dart';
 
 class UserController extends GetxController {
-  final user = User().obs;
+  UserRepository _repo;
 
+  UserController(this._repo) {}
+  final _user = User().obs;
 
-  entryUser() async {
-    final user = await AmplifyService().Auth.fetchUser();
-    // AnalyticsService.log(LoginEvent());
+  static UserController get to => Get.find<UserController>();
+  User get user => _user.value;
 
-    // Get.offNamed(ROUTES.home);
+  @override
+  onInit() {
+    print('UserController onInit');
+    super.onInit();
   }
 
-  checkUser() async {
-    final succeess = await AmplifyService().Auth.checkAuthStatus();
-    if (succeess) {
-      entryUser();
-    } else {
-      // Get.offNamed(ROUTES.login);
+  @override
+  onClose() {
+    try {
+      throw 42;
+    } on Exception catch (_) {
+      print('It should not happen');
+    }
+    super.onClose();
+  }
+
+  Future<void> entryUser() async {
+    final user = await _repo.loginUser();
+    if (user != null) {
+      Get.offNamed(ROUTES.home);
     }
   }
 
-  logut() async {
-    await AmplifyService().Auth.signout();
-    // Get.offAllNamed(ROUTES.login);
+  Future<void> checkUser() async {
+    final succeess = await _repo.checkUser();
+    if (succeess) {
+      entryUser();
+    } else {
+      Get.offNamed(ROUTES.login);
+    }
+  }
+
+  Future<void> logut() async {
+    await _repo.logut();
+    Get.offAllNamed(ROUTES.login);
   }
 }
