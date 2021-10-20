@@ -21,7 +21,7 @@ Future<void> main() async {
 }
 
 initialize() async {
-  Get.lazyPut(() => UserController(UserRepository()));
+  Get.put<UserController>(UserController(UserRepository()), permanent: true);
 }
 
 Future<Null> _ensureLoggedIn(BuildContext context) async {

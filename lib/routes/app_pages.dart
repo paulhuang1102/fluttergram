@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
 import '../middlewares/router_auth.dart';
+import '../bindings/home_page_binding.dart';
 
 part './app_routes.dart';
 
@@ -18,6 +19,7 @@ abstract class AppPages {
       middlewares: [
         RouteAuthMiddleware(),
       ],
+      binding: HomeBinding(),
     ),
     GetPage(
       name: ROUTES.login,
