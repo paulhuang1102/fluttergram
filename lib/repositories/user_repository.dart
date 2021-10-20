@@ -1,5 +1,3 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-
 import '../services/amplify/amplify_service.dart';
 import '../models/user.dart';
 
@@ -10,8 +8,11 @@ class UserRepository {
   get user => _user;
   get isTokenValid => _isTokenValid;
 
-  Future<AuthUser?> loginUser() {
-    return AmplifyService().Auth.fetchUser();
+  Future<User?> loginUser() async {
+    final user = await AmplifyService().Auth.fetchUser();
+    if (user != null) {
+      return User.fromAuthUser(user);
+    }
   }
 
   Future<bool> checkUser() {
@@ -20,5 +21,13 @@ class UserRepository {
 
   logut() {
     return AmplifyService().Auth.signout();
+  }
+
+  Future<bool> signInGoogle() {
+    return AmplifyService().Auth.signInGoogle();
+  }
+
+  Future<bool> signInFB() {
+    return AmplifyService().Auth.signInFB();
   }
 }

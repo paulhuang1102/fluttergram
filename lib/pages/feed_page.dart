@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'image_post.dart';
+import '../image_post.dart';
 import 'dart:async';
-import 'main.dart';
 import 'dart:io';
 import 'dart:convert';
 
-class Feed extends StatefulWidget {
-  _Feed createState() => _Feed();
+class FeedPage extends StatefulWidget {
+  _FeedPage createState() => _FeedPage();
 }
 
-class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
+class _FeedPage extends State<FeedPage> with AutomaticKeepAliveClientMixin<FeedPage> {
   List<ImagePost>? feedData;
 
   @override

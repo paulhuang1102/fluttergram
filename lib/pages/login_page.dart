@@ -1,7 +1,9 @@
+import 'package:Fluttergram/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+  final userController = UserController.to;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,8 @@ class LoginPage extends StatelessWidget {
   }
 
   void googleLogin() async {
-    // var res = await AmplifyService().Auth.signinGoogle();
+    await userController.loginWithGoogle();
   }
 
-  void fbLogin() async {
-    // var res = await AmplifyService().Auth.signFB();
-  }
+  void fbLogin() async {}
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
-import 'image_post.dart'; //needed to open image when clicked
+import '../image_post.dart'; //needed to open image when clicked
 import 'profile_page.dart'; // to open the profile page when username clicked
-import 'main.dart'; //needed for currentuser id
+import '../main.dart'; //needed for currentuser id
 
 class ActivityFeedPage extends StatefulWidget {
   @override

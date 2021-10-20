@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'main.dart';
 import 'dart:async';
-import 'profile_page.dart';
+import 'pages/profile_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'comment_screen.dart';
 import 'package:flare_flutter/flare_actor.dart';

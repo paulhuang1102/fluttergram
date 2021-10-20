@@ -1,7 +1,14 @@
-import 'package:Fluttergram/controllers/page_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+
+import 'activity_feed_page.dart';
+import 'feed_page.dart';
+import 'search_page.dart';
+import 'upload_page.dart';
+import 'profile_page.dart';
+import '../controllers/page_controller.dart';
+import '../controllers/user_controller.dart';
 
 const List<IconData> NAV_ITEMS = [
   Icons.home,
@@ -11,20 +18,10 @@ const List<IconData> NAV_ITEMS = [
   Icons.person
 ];
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
+  HomePage({Key? key}) : super(key: key);
   final controller = HomePageController.to;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final userController = UserController.to; 
 
   void navigationTapped(int page) {
     //Animating Page
@@ -38,26 +35,25 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               color: Colors.white,
-              // child: Feed(),
+              child: FeedPage(),
             ),
             Container(
               color: Colors.white,
-              // child: SearchPage(),
+              child: SearchPage(),
             ),
             Container(
               color: Colors.white,
-              // child: Uploader(),
+              child: Uploader(),
             ),
             Container(
               color: Colors.white,
-              // child: ActivityFeedPage(),
+              child: ActivityFeedPage(),
             ),
             Container(
-              color: Colors.white,
-              // child: ProfilePage(
-              // userId: googleSignIn.currentUser.id,
-              // )
-            ),
+                color: Colors.white,
+                child: ProfilePage(
+                  userId: userController.user.id,
+                )),
           ],
           controller: controller.pageController,
           physics: NeverScrollableScrollPhysics(),

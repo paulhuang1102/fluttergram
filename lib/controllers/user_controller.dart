@@ -12,6 +12,7 @@ class UserController extends GetxController {
 
   UserController(this._repo) {}
   final _user = User().obs;
+  // TODO: Error
 
   static UserController get to => Get.find<UserController>();
   User get user => _user.value;
@@ -32,9 +33,10 @@ class UserController extends GetxController {
     super.onClose();
   }
 
-  Future<void> entryUser() async {
+  Future<void> _entryUser() async {
     final user = await _repo.loginUser();
     if (user != null) {
+      _user(user);
       Get.offNamed(ROUTES.home);
     }
   }
@@ -42,7 +44,7 @@ class UserController extends GetxController {
   Future<void> checkUser() async {
     final succeess = await _repo.checkUser();
     if (succeess) {
-      entryUser();
+      _entryUser();
     } else {
       Get.offNamed(ROUTES.login);
     }
@@ -51,5 +53,13 @@ class UserController extends GetxController {
   Future<void> logut() async {
     await _repo.logut();
     Get.offAllNamed(ROUTES.login);
+  }
+
+  Future<void> loginWithGoogle() async {
+    final success = await _repo.signInGoogle();
+
+    if (success) {
+      _entryUser();
+    }
   }
 }

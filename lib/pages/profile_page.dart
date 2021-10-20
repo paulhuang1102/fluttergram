@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'main.dart';
-import 'image_post.dart';
+import '../image_post.dart';
 import 'dart:async';
-import 'edit_profile_page.dart';
-import 'models/user.dart';
+import '../edit_profile_page.dart';
+import '../models/user.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({this.userId});

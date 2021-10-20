@@ -1,4 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class User {
   final String? email;
@@ -10,15 +10,16 @@ class User {
   final Map? followers;
   final Map? following;
 
-  const User(
-      {this.username,
-      this.id,
-      this.photoUrl,
-      this.email,
-      this.displayName,
-      this.bio,
-      this.followers,
-      this.following});
+  const User({
+    this.username,
+    this.id,
+    this.photoUrl,
+    this.email,
+    this.displayName,
+    this.bio,
+    this.followers,
+    this.following,
+  });
 
   factory User.fromDocument(Map document) {
     return User(
@@ -31,5 +32,9 @@ class User {
       followers: document['followers'],
       following: document['following'],
     );
+  }
+
+  factory User.fromAuthUser(AuthUser auser) {
+    return User(id: auser.userId, username: auser.username);
   }
 }

@@ -4,9 +4,9 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
-import 'main.dart';
+import '../main.dart';
 import 'dart:io';
-import 'location.dart';
+import '../location.dart';
 // import 'package:geocoder/geocoder.dart';
 
 class Uploader extends StatefulWidget {

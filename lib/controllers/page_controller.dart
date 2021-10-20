@@ -9,7 +9,6 @@ class HomePageController extends GetxController {
   final pageController = PageController();
 
   onPageChanged(input) {
-    print(input);
     page.value = input;
   }
 
