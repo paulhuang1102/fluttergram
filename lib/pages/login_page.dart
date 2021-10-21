@@ -40,5 +40,7 @@ class LoginPage extends StatelessWidget {
     await userController.loginWithGoogle();
   }
 
-  void fbLogin() async {}
+  void fbLogin() async {
+    await userController.loginWithFB();
+  }
 }

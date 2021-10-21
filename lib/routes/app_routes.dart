@@ -5,4 +5,5 @@ abstract class ROUTES{
   static const home = '/home';
   static const login = '/login';
   static const createAccount = '/create_account';
+  static const ar = '/ar';
 }
