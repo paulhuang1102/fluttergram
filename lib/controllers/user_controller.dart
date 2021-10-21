@@ -1,4 +1,4 @@
-import 'package:Fluttergram/utils/logger.dart';
+// import 'package:Fluttergram/utils/logger.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -37,7 +37,7 @@ class UserController extends GetxController {
   Future<void> _entryUser() async {
     final user = await _repo.loginUser();
     // final userData = await _repo.fetchUserData();
-    final created = await _repo.createUserData();
+    // final created = await _repo.createUserData();
 
     
     if (user != null) {
@@ -62,6 +62,14 @@ class UserController extends GetxController {
 
   Future<void> loginWithGoogle() async {
     final success = await _repo.signInGoogle();
+
+    if (success) {
+      _entryUser();
+    }
+  }
+
+   Future<void> loginWithFB() async {
+    final success = await _repo.signInFB();
 
     if (success) {
       _entryUser();

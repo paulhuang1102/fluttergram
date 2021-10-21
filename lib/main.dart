@@ -161,7 +161,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           buttonColor: Colors.pink,
           primaryIconTheme: IconThemeData(color: Colors.black)),
-      initialRoute: '/home',
+      initialRoute: ROUTES.home,
       getPages: AppPages.pages,
     );
   }
