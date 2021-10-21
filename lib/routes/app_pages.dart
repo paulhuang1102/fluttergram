@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
+import '../pages/create_account_page.dart';
 import '../middlewares/router_auth.dart';
 import '../bindings/home_page_binding.dart';
 
@@ -25,6 +26,10 @@ abstract class AppPages {
       name: ROUTES.login,
       page: () => LoginPage(),
       // binding: LoginBinding(),
+    ),
+    GetPage(
+      name: ROUTES.createAccount,
+      page: () => CreateAccountPage(),
     ),
     // GetPage(
     //   name: ROUTES.signup,

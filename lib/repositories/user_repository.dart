@@ -1,5 +1,9 @@
+import 'package:Fluttergram/utils/graphql/mutations/user.dart';
+
 import '../services/amplify/amplify_service.dart';
 import '../models/user.dart';
+import '../utils/gql_agent.dart';
+import '../utils/graphql/queries/user.dart';
 
 class UserRepository {
   bool _isTokenValid = false;
@@ -29,5 +33,18 @@ class UserRepository {
 
   Future<bool> signInFB() {
     return AmplifyService().Auth.signInFB();
+  }
+
+  fetchUserData() {
+    return GqlAgent().query(getUser, {'username': '123'});
+  }
+
+  createUserData() {
+    return GqlAgent().mutation(createUser, {
+      'username': '123',
+      'name': 'paul',
+      'email': 'paul@email.com',
+      'avatarImageURL': 'https://google.com'
+    });
   }
 }

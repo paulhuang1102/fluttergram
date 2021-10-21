@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CreateAccount extends StatefulWidget {
+class CreateAccountPage extends StatefulWidget {
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  _CreateAccountPageState createState() => _CreateAccountPageState();
 }
 
-class _CreateAccountState extends State<CreateAccount> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   final name = TextEditingController();
 
 
