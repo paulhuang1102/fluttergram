@@ -12,7 +12,7 @@ class UserController extends GetxController {
   UserRepository _repo;
 
   UserController(this._repo) {}
-  final _user = User().obs;
+  final _user = User(id: '').obs;
   // TODO: Error
 
   static UserController get to => Get.find<UserController>();
@@ -20,7 +20,6 @@ class UserController extends GetxController {
 
   @override
   onInit() {
-    print('UserController onInit');
     super.onInit();
   }
 
@@ -36,13 +35,17 @@ class UserController extends GetxController {
 
   Future<void> _entryUser() async {
     final user = await _repo.loginUser();
-    // final userData = await _repo.fetchUserData();
-    // final created = await _repo.createUserData();
 
+    if (user == null) return;
+    final userData = await _repo.fetchUserData(user.id);
+  
     
-    if (user != null) {
+    if (userData != null) {
       _user(user);
       Get.offNamed(ROUTES.home);
+    } else {
+      _user(user);
+      Get.toNamed(ROUTES.createAccount);
     }
   }
 

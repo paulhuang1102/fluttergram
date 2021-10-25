@@ -96,7 +96,7 @@ class UserSearchItem extends StatelessWidget {
           subtitle: Text(user.displayName!),
         ),
         onTap: () {
-          openProfile(context, user.id!);
+          openProfile(context, user.id);
         });
   }
 }

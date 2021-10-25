@@ -147,7 +147,7 @@ class _CommentScreenState extends State<CommentScreen> {
             comment: comment,
             // timestamp: Timestamp.now(),
             avatarUrl: currentUserModel!.photoUrl!,
-            userId: currentUserModel!.id!));
+            userId: currentUserModel!.id));
     });
   }
 }
